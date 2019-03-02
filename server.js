@@ -7,12 +7,12 @@ var app = express();
 
 // Authentication
 const {OAuth2Client} = require('google-auth-library');
-const client = new OAuth2Client("589643988866-pj92jte8j7de1n04o1frbidqtv995spi.apps.googleusercontent.com");
+const client = new OAuth2Client(process.env.CLIENTID);
 
 async function verify(token) {
   const ticket = await client.verifyIdToken({
       idToken: token,
-      audience: "589643988866-pj92jte8j7de1n04o1frbidqtv995spi.apps.googleusercontent.com",
+      audience: process.env.CLIENTID,
   });
   const payload = ticket.getPayload();
   const userid = payload['sub'];
