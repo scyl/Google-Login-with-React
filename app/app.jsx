@@ -19,7 +19,7 @@ class Auth extends React.Component {
   componentDidMount() {
     gapi.load('auth2', () => {
       gapi.auth2.init({
-        client_id: '589643988866-pj92jte8j7de1n04o1frbidqtv995spi.apps.googleusercontent.com'
+        client_id: process.env.CLIENTID
       }).then(() => {
         gapi.auth2.getAuthInstance().isSignedIn.listen(this.updateSignedIn);
         this.renderButton();
