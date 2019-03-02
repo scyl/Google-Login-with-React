@@ -15,9 +15,14 @@ async function verify(token) {
       audience: process.env.CLIENTID,
   });
   const payload = ticket.getPayload();
-  const userid = payload['sub'];
+  const user = {
+    id: payload['sub'],
+    givenName: payload['given_name'],
+    lastName: payload['last_name'],
+    email: payload['email'],
+  };
   
-  return userid;
+  return user;
 }
 
 app.use(bodyParser.json());
@@ -32,8 +37,8 @@ app.get("/", (request, response) => {
 });
 
 app.post("/auth", (request, response) => {
-  verify(request.get('Access-Token')).then((id) => {
-    if (id === process.env.USERID) {
+  verify(request.get('Access-Token')).then((user) => {
+    if (user.id === process.env.USERID) {
       response.json({result: "You are Stephen"});
     } else {
       response.json({result: "Who are you?"});
