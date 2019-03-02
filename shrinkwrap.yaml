@@ -1,6 +1,5 @@
 dependencies:
   express: 4.16.4
-  gapi-client: 0.0.3
   google-auth-library: 3.1.0
   jsx-loader: 0.13.2
   react: 16.8.3
@@ -1289,10 +1288,6 @@ packages:
     requiresBuild: true
     resolution:
       integrity: sha512-Pxm6sI2MeBD7RdD12RYsqaP0nMiwx8eZBXCa6z2L+mRHm2DYrOYwihmhjpkdjUHwQhslWQjRpEgNq4XvBmaAuw==
-  /gapi-client/0.0.3:
-    dev: false
-    resolution:
-      integrity: sha1-97xwrQbdnr31e1glygCCBd65Eb8=
   /gaxios/1.8.0:
     dependencies:
       abort-controller: 2.0.2
@@ -3407,7 +3402,6 @@ shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
 specifiers:
   express: ^4.16.4
-  gapi-client: ^0.0.3
   google-auth-library: ^3.1.0
   jsx-loader: ^0.13.2
   react: ^16.8.2
