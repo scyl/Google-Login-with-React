@@ -24,6 +24,7 @@ app.use(bodyParser.json());
 
 // http://expressjs.com/en/starter/static-files.html
 app.use(express.static('public'));
+app.use(express.static('style'));
 
 // http://expressjs.com/en/starter/basic-routing.html
 app.get("/", (request, response) => {
