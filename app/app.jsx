@@ -7,11 +7,13 @@ class Auth extends React.Component {
     
     this.state = {
       signedIn: false,
-      authReady: false,
+      googleUser: null,
+      message: null,
     }
     
     this.onSuccess = this.onSuccess.bind(this);
     this.updateSignedIn = this.updateSignedIn.bind(this);
+    this.connectToBackend = this.connectToBackend.bind(this);
   }
   
   componentDidMount() {
@@ -21,9 +23,6 @@ class Auth extends React.Component {
       }).then(() => {
         gapi.auth2.getAuthInstance().isSignedIn.listen(this.updateSignedIn);
         this.renderButton();
-        this.setState({
-          authReady: true,
-        });
       });
     });
   }
@@ -49,6 +48,7 @@ class Auth extends React.Component {
   onSuccess(googleUser) {
     this.setState({
       signedIn: true,
+      googleUser,
     });
     console.log('Logged in as: ' + googleUser.getBasicProfile().getName());
   }
@@ -64,11 +64,26 @@ class Auth extends React.Component {
   }
   
   signOut() {
-    console.log("asdf");
-    var auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
+    gapi.auth2.getAuthInstance().signOut().then(function () {
       console.log('User signed out.');
     });
+  }
+  
+  connectToBackend() {
+    const id_token = this.state.googleUser.getAuthResponse().id_token;
+    
+    fetch('/auth', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Token": id_token,
+      },
+      body: JSON.stringify({token: id_token}),
+    }).then(res => {
+      res.json().then((result => {
+        this.setState({message: result.result});
+      }));
+    })
   }
   
   render() {
@@ -82,9 +97,10 @@ class Auth extends React.Component {
     
     return (
       <div>
-        <h1>Hi {gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getGivenName()}</h1>
-        <div id="my-signin2"></div>
-        <div onClick={this.signOut}>Sign out</div>
+        <h1>Hi {this.state.googleUser.getBasicProfile().getGivenName()}</h1>
+        <a href="#" onClick={this.connectToBackend}>Authenticate with back-end</a><br/>
+        <a href="#" onClick={this.signOut}>Sign out</a><br/>
+        <div>{this.state.message}</div>
       </div>
     );
   }
