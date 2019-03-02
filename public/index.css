@@ -1,0 +1,6 @@
+.container__login {
+  display: flex;
+  height: -webkit-fill-available;
+  justify-content: center;
+  align-items: center;
+}
